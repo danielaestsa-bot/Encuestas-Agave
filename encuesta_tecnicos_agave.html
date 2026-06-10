@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cuestionario Técnicos y Supervisores de Agave – CIESTAAM / UACh 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #2D5016;
+    --verde-med: #4A7C1F;
+    --verde-claro: #7FB241;
+    --verde-bg: #EAF4D0;
+    --tierra: #8B5E2A;
+    --arena: #F5EDD6;
+    --crema: #FAF7F0;
+    --gris: #2A2A2A;
+    --gris-med: #6B6B6B;
+    --gris-borde: #D8CDB8;
+    --error: #C0392B;
+    --exito: #27AE60;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--crema);
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--gris);
+    line-height: 1.6;
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 10% 0%, rgba(127,178,65,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 90% 100%, rgba(45,80,22,0.07) 0%, transparent 60%);
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--verde) 0%, #1A3209 50%, var(--verde-med) 100%);
+    color: white;
+    padding: 48px 32px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.02) 20px, rgba(255,255,255,0.02) 22px);
+  }
+  .header-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+  .header-badge {
+    display: inline-block;
+    background: rgba(127,178,65,0.25);
+    border: 1px solid rgba(127,178,65,0.5);
+    color: #C5E88A;
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 18px;
+  }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(20px,4vw,30px); font-weight: 700; line-height: 1.25; margin-bottom: 10px; }
+  .header h2 { font-size: clamp(13px,2.2vw,15px); font-weight: 300; opacity: .82; margin-bottom: 20px; }
+  .header-meta { font-size: 13px; opacity: .65; border-top: 1px solid rgba(255,255,255,.15); padding-top: 16px; }
+
+  /* INTRO */
+  .intro-box {
+    background: white;
+    border-left: 4px solid var(--verde-claro);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px;
+    margin: 26px auto 0;
+    max-width: 760px;
+    font-size: 13.5px; color: var(--gris-med); line-height: 1.7;
+  }
+
+  /* PROGRESS */
+  .progress-wrap { max-width: 760px; margin: 16px auto 0; padding: 0 20px; }
+  .progress-bar-bg { background: var(--gris-borde); border-radius: 4px; height: 5px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--verde-med), var(--verde-claro)); border-radius: 4px; transition: width .5s ease; width: 0%; }
+  .progress-label { font-size: 12px; color: var(--gris-med); text-align: right; margin-top: 5px; }
+
+  /* FORM */
+  .form-container { max-width: 760px; margin: 0 auto; padding: 0 20px 60px; }
+
+  /* SECTIONS */
+  .section {
+    background: white; border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(45,80,22,.07);
+    margin-bottom: 26px; overflow: hidden;
+    animation: fadeUp .4s ease both;
+  }
+  @keyframes fadeUp { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:translateY(0); } }
+  .section:nth-child(2){animation-delay:.05s} .section:nth-child(3){animation-delay:.10s}
+  .section:nth-child(4){animation-delay:.15s} .section:nth-child(5){animation-delay:.20s}
+  .section:nth-child(6){animation-delay:.25s} .section:nth-child(7){animation-delay:.30s}
+
+  .section-header {
+    background: linear-gradient(90deg, var(--verde), var(--verde-med));
+    color: white; padding: 13px 22px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-num {
+    background: rgba(255,255,255,.2); width: 28px; height: 28px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; flex-shrink: 0;
+  }
+  .section-title { font-family: 'Playfair Display', serif; font-size: 15px; font-weight: 600; }
+  .section-note {
+    background: var(--verde-bg); border-bottom: 1px solid #D0E8A8;
+    padding: 10px 22px; font-size: 13px; color: #3A6010; font-style: italic;
+  }
+  .section-body { padding: 22px; }
+
+  /* QUESTIONS */
+  .question { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #F0EBE0; }
+  .question:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .q-label { font-size: 14.5px; font-weight: 600; color: var(--gris); margin-bottom: 12px; display: flex; gap: 8px; }
+  .q-num { color: var(--verde-med); font-weight: 700; flex-shrink: 0; }
+  .q-note { font-size: 12.5px; color: var(--gris-med); font-style: italic; margin-bottom: 10px; }
+
+  /* OPTIONS */
+  .options-list { display: flex; flex-direction: column; gap: 7px; }
+  .option-item {
+    display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+    padding: 9px 13px; border-radius: 7px;
+    border: 1.5px solid transparent; transition: all .18s ease; background: #FAFAF8;
+  }
+  .option-item:hover { background: #F0F7E8; border-color: var(--verde-claro); }
+  .option-item.selected { background: #EBF5D9; border-color: var(--verde-med); }
+  .option-item input[type="radio"] { width:17px; height:17px; accent-color:var(--verde-med); flex-shrink:0; margin-top:2px; cursor:pointer; }
+  .option-text { font-size: 14px; color: var(--gris); line-height: 1.4; }
+
+  /* TEXT INPUT */
+  .text-input {
+    width: 100%; border: 1.5px solid var(--gris-borde); border-radius: 7px;
+    padding: 10px 13px; font-size: 14px; font-family: 'Source Sans 3', sans-serif;
+    color: var(--gris); background: #FAFAF8; transition: border-color .18s; outline: none;
+  }
+  .text-input:focus { border-color: var(--verde-med); background: white; box-shadow: 0 0 0 3px rgba(74,124,31,.1); }
+
+  /* VALIDATION */
+  .field-error { color: var(--error); font-size: 12px; margin-top: 6px; display: none; }
+  .question.has-error .q-label .q-num { color: var(--error); }
+
+  /* SUBMIT */
+  .submit-section { text-align: center; padding: 30px 20px 16px; }
+  .btn-submit {
+    background: linear-gradient(135deg, var(--verde), var(--verde-med));
+    color: white; border: none; padding: 15px 48px;
+    font-size: 16px; font-weight: 600; font-family: 'Source Sans 3', sans-serif;
+    border-radius: 50px; cursor: pointer;
+    box-shadow: 0 4px 18px rgba(45,80,22,.3); transition: all .22s ease; letter-spacing: .3px;
+  }
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 7px 24px rgba(45,80,22,.4); }
+  .btn-submit:disabled { opacity: .7; cursor: not-allowed; transform: none; }
+
+  /* SUCCESS */
+  .success-screen { display: none; text-align: center; padding: 60px 20px; max-width: 560px; margin: 0 auto; }
+  .success-icon { width:72px; height:72px; background:var(--exito); border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 20px; font-size:32px; }
+  .success-screen h2 { font-family:'Playfair Display',serif; font-size:26px; color:var(--verde); margin-bottom:12px; }
+  .success-screen p { color:var(--gris-med); font-size:15px; }
+
+  .footer { background:var(--verde); color:rgba(255,255,255,.65); text-align:center; padding:20px; font-size:12.5px; }
+  .footer a { color:#A8D060; text-decoration:none; }
+
+  @media(max-width:540px){
+    .header{padding:36px 18px 30px;}
+    .section-body{padding:16px;}
+    .option-item{padding:8px 10px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-badge">CIESTAAM · UACh · 2026</div>
+    <h1>Cuestionario para Técnicos y Supervisores de Cultivo de Agave</h1>
+    <h2>Análisis de Oportunidades de Innovación en el Cultivo del Agave · Barreras a la Innovación y Conservación de Suelos</h2>
+    <div class="header-meta">Maestría en Ciencias en Estrategia Agroempresarial &nbsp;·&nbsp; Ana Daniela Espinoza Serrano</div>
+  </div>
+</div>
+
+<!-- INTRO -->
+<div style="max-width:760px;margin:26px auto 0;padding:0 20px;">
+  <div class="intro-box">
+    Estimado/a técnico/a o supervisor/a: Este cuestionario forma parte de una investigación académica de la <strong>Universidad Autónoma Chapingo</strong>, orientada a identificar las barreras para la innovación en el cultivo del agave tequilero, con énfasis en la conservación de suelos. Su participación es <strong>completamente voluntaria</strong>; la información será tratada con <strong>estricta confidencialidad</strong> y usada exclusivamente con fines académicos.
+  </div>
+</div>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 de 5 bloques completados</div>
+</div>
+
+<!-- FORM -->
+<div class="form-container">
+<form id="surveyForm" novalidate>
+
+<!-- ═══ IDENTIFICACIÓN ═══ -->
+<div class="section" id="sec0">
+  <div class="section-header">
+    <div class="section-num">✦</div>
+    <div class="section-title">Datos de Identificación</div>
+  </div>
+  <div class="section-body">
+
+    <div class="question" id="q_nombre">
+      <div class="q-label"><span class="q-num">●</span> Nombre</div>
+      <input class="text-input" type="text" name="nombre" id="nombre" placeholder="Escriba su nombre completo" style="max-width:420px;">
+      <div class="field-error" id="err_nombre">Por favor ingrese su nombre.</div>
+    </div>
+
+    <div class="question">
+      <div class="q-label"><span class="q-num">●</span> Cargo / Perfil <span style="font-weight:400;color:var(--gris-med);font-size:13px;">(opcional)</span></div>
+      <input class="text-input" type="text" name="cargo" placeholder="Ej. Técnico de campo, Supervisor de cultivo…" style="max-width:420px;">
+    </div>
+
+    <div class="question" id="q_municipio">
+      <div class="q-label"><span class="q-num">●</span> Municipio donde trabaja</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="municipio" value="Amatitán"><span class="option-text">Amatitán</span></label>
+        <label class="option-item"><input type="radio" name="municipio" value="Atotonilco el Alto"><span class="option-text">Atotonilco el Alto</span></label>
+        <label class="option-item" id="opt_mun_otro">
+          <input type="radio" name="municipio" value="otro" id="mun_otro">
+          <span class="option-text">Otro &nbsp;→&nbsp; <input class="text-input" type="text" id="mun_otro_txt" name="municipio_otro" placeholder="Escriba su municipio" disabled style="display:inline-block;width:200px;padding:4px 10px;font-size:13px;"></span>
+        </label>
+      </div>
+      <div class="field-error" id="err_municipio">Por favor seleccione su municipio.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ BLOQUE 1 ═══ -->
+<div class="section" id="sec1">
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">Perfil y Experiencia</div>
+  </div>
+  <div class="section-note">Las primeras preguntas nos permiten entender su contexto de trabajo y la escala de su labor técnica en campo.</div>
+  <div class="section-body">
+
+    <div class="question" id="q1">
+      <div class="q-label"><span class="q-num">1.</span> ¿Cuántos años lleva trabajando en el cultivo del agave o en la industria del tequila?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q1" value="Menos de 3 años"><span class="option-text">Menos de 3 años</span></label>
+        <label class="option-item"><input type="radio" name="q1" value="3 – 7 años"><span class="option-text">3 – 7 años</span></label>
+        <label class="option-item"><input type="radio" name="q1" value="8 – 15 años"><span class="option-text">8 – 15 años</span></label>
+        <label class="option-item"><input type="radio" name="q1" value="Más de 15 años"><span class="option-text">Más de 15 años</span></label>
+      </div>
+      <div class="field-error" id="err_q1">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q2">
+      <div class="q-label"><span class="q-num">2.</span> ¿Para qué tipo de organización trabaja como técnico o supervisor?</div>
+      <div class="q-note">Seleccione la opción que mejor describe su situación actual.</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q2" value="Empresa tequilera (técnico o supervisor interno de campo)"><span class="option-text">Empresa tequilera (técnico o supervisor interno de campo)</span></label>
+        <label class="option-item"><input type="radio" name="q2" value="Organización o asociación de productores de agave"><span class="option-text">Organización o asociación de productores de agave</span></label>
+        <label class="option-item"><input type="radio" name="q2" value="Institución pública (SADER, extensionismo agrícola, INCA Rural)"><span class="option-text">Institución pública (SADER, extensionismo agrícola, INCA Rural)</span></label>
+        <label class="option-item"><input type="radio" name="q2" value="Consultor o asesor independiente"><span class="option-text">Consultor o asesor independiente</span></label>
+      </div>
+      <div class="field-error" id="err_q2">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q3">
+      <div class="q-label"><span class="q-num">3.</span> ¿Con qué frecuencia visita los predios de los productores que supervisa?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q3" value="Semanalmente"><span class="option-text">Semanalmente</span></label>
+        <label class="option-item"><input type="radio" name="q3" value="Cada dos semanas"><span class="option-text">Cada dos semanas</span></label>
+        <label class="option-item"><input type="radio" name="q3" value="Una vez al mes"><span class="option-text">Una vez al mes</span></label>
+        <label class="option-item"><input type="radio" name="q3" value="Solo en momentos clave del ciclo del cultivo"><span class="option-text">Solo en momentos clave del ciclo del cultivo (plantación, fertilización, jima)</span></label>
+      </div>
+      <div class="field-error" id="err_q3">Por favor seleccione una opción.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ BLOQUE 2 ═══ -->
+<div class="section" id="sec2">
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">Estado del Suelo y Prácticas de Conservación</div>
+  </div>
+  <div class="section-note">Este bloque busca conocer la situación actual del suelo en los predios que supervisa y qué prácticas de conservación se están aplicando (o no).</div>
+  <div class="section-body">
+
+    <div class="question" id="q4">
+      <div class="q-label"><span class="q-num">4.</span> ¿Cómo describiría el estado general del suelo en los predios de agave que supervisa?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q4" value="Buen estado; los productores aplican prácticas adecuadas de conservación"><span class="option-text">Buen estado; los productores aplican prácticas adecuadas de conservación</span></label>
+        <label class="option-item"><input type="radio" name="q4" value="Deterioro leve; hay margen de mejora pero la situación es manejable"><span class="option-text">Deterioro leve; hay margen de mejora pero la situación es manejable</span></label>
+        <label class="option-item"><input type="radio" name="q4" value="Deterioro moderado; se necesitan cambios importantes en el manejo"><span class="option-text">Deterioro moderado; se necesitan cambios importantes en el manejo</span></label>
+        <label class="option-item"><input type="radio" name="q4" value="Deterioro severo; el suelo está muy degradado o erosionado"><span class="option-text">Deterioro severo; el suelo está muy degradado o erosionado</span></label>
+      </div>
+      <div class="field-error" id="err_q4">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q5">
+      <div class="q-label"><span class="q-num">5.</span> ¿Cuál es el principal problema de degradación del suelo que observa en los predios de agave?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q5" value="Erosión hídrica o eólica (pérdida de capa superficial del suelo)"><span class="option-text">Erosión hídrica o eólica (pérdida de capa superficial del suelo)</span></label>
+        <label class="option-item"><input type="radio" name="q5" value="Compactación del suelo (por maquinaria o pisoteo)"><span class="option-text">Compactación del suelo (por maquinaria o pisoteo)</span></label>
+        <label class="option-item"><input type="radio" name="q5" value="Pérdida de materia orgánica y fertilidad"><span class="option-text">Pérdida de materia orgánica y fertilidad</span></label>
+        <label class="option-item"><input type="radio" name="q5" value="Acumulación de agroquímicos o salinización"><span class="option-text">Acumulación de agroquímicos o salinización</span></label>
+        <label class="option-item"><input type="radio" name="q5" value="Suelo desnudo entre melgas (sin cobertura vegetal)"><span class="option-text">Suelo desnudo entre melgas (sin cobertura vegetal)</span></label>
+      </div>
+      <div class="field-error" id="err_q5">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q6">
+      <div class="q-label"><span class="q-num">6.</span> ¿Qué práctica agronómica observa que más contribuye al deterioro del suelo?</div>
+      <div class="q-note">Seleccione la opción más frecuente.</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q6" value="Monocultivo intensivo sin rotación ni descanso del suelo"><span class="option-text">Monocultivo intensivo sin rotación ni descanso del suelo</span></label>
+        <label class="option-item"><input type="radio" name="q6" value="Uso excesivo o inadecuado de herbicidas y agroquímicos"><span class="option-text">Uso excesivo o inadecuado de herbicidas y agroquímicos</span></label>
+        <label class="option-item"><input type="radio" name="q6" value="Jima sin reincorporación de materia orgánica (pencas, bagazo)"><span class="option-text">Jima sin reincorporación de materia orgánica (pencas, bagazo)</span></label>
+        <label class="option-item"><input type="radio" name="q6" value="Laboreo excesivo con maquinaria pesada"><span class="option-text">Laboreo excesivo con maquinaria pesada</span></label>
+        <label class="option-item"><input type="radio" name="q6" value="Ausencia total de prácticas de conservación de suelo"><span class="option-text">Ausencia total de prácticas de conservación de suelo</span></label>
+      </div>
+      <div class="field-error" id="err_q6">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q7">
+      <div class="q-label"><span class="q-num">7.</span> ¿Qué prácticas de conservación de suelo están aplicando actualmente los productores que atiende?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q7" value="Terrazas, bordos o barreras de retención"><span class="option-text">Terrazas, bordos o barreras de retención</span></label>
+        <label class="option-item"><input type="radio" name="q7" value="Cobertura vegetal entre melgas o policultivo con agave"><span class="option-text">Cobertura vegetal entre melgas o policultivo con agave</span></label>
+        <label class="option-item"><input type="radio" name="q7" value="Incorporación de materia orgánica o composta"><span class="option-text">Incorporación de materia orgánica o composta</span></label>
+        <label class="option-item"><input type="radio" name="q7" value="Agricultura regenerativa o agroecológica"><span class="option-text">Agricultura regenerativa o agroecológica</span></label>
+        <label class="option-item"><input type="radio" name="q7" value="Ninguna práctica de conservación de suelo"><span class="option-text">Ninguna práctica de conservación de suelo</span></label>
+      </div>
+      <div class="field-error" id="err_q7">Por favor seleccione una opción.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ BLOQUE 3 ═══ -->
+<div class="section" id="sec3">
+  <div class="section-header">
+    <div class="section-num">3</div>
+    <div class="section-title">Barreras Técnicas y a la Innovación en Manejo del Suelo</div>
+  </div>
+  <div class="section-note">Bloque central del cuestionario. Nos interesa entender, desde su experiencia directa en campo, por qué es difícil introducir innovaciones en el manejo y la conservación del suelo del agave.</div>
+  <div class="section-body">
+
+    <div class="question" id="q8">
+      <div class="q-label"><span class="q-num">8.</span> ¿Cuál es la razón principal por la que los productores NO adoptan prácticas innovadoras de conservación o mejora del suelo?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q8" value="No ven un beneficio económico claro ni a corto plazo"><span class="option-text">No ven un beneficio económico claro ni a corto plazo</span></label>
+        <label class="option-item"><input type="radio" name="q8" value="Falta de capital para invertir en nuevas prácticas o insumos"><span class="option-text">Falta de capital para invertir en nuevas prácticas o insumos</span></label>
+        <label class="option-item"><input type="radio" name="q8" value="Desconocimiento de las opciones disponibles"><span class="option-text">Desconocimiento de las opciones disponibles</span></label>
+        <label class="option-item"><input type="radio" name="q8" value="Desconfianza o resistencia cultural al cambio"><span class="option-text">Desconfianza o resistencia cultural al cambio</span></label>
+        <label class="option-item"><input type="radio" name="q8" value="La empresa tequilera no lo exige ni lo incentiva"><span class="option-text">La empresa tequilera no lo exige ni lo incentiva</span></label>
+      </div>
+      <div class="field-error" id="err_q8">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q9">
+      <div class="q-label"><span class="q-num">9.</span> ¿Qué nivel de conocimiento técnico tienen, en general, los productores que atiende sobre conservación de suelos?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q9" value="Alto; conocen y aplican conceptos técnicos de conservación"><span class="option-text">Alto; conocen y aplican conceptos técnicos de conservación</span></label>
+        <label class="option-item"><input type="radio" name="q9" value="Medio; tienen nociones básicas pero no las aplican sistemáticamente"><span class="option-text">Medio; tienen nociones básicas pero no las aplican sistemáticamente</span></label>
+        <label class="option-item"><input type="radio" name="q9" value="Bajo; no tienen formación técnica en conservación de suelos"><span class="option-text">Bajo; no tienen formación técnica en conservación de suelos</span></label>
+        <label class="option-item"><input type="radio" name="q9" value="Muy bajo; el tema es completamente ajeno a su práctica diaria"><span class="option-text">Muy bajo; el tema es completamente ajeno a su práctica diaria</span></label>
+      </div>
+      <div class="field-error" id="err_q9">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q10">
+      <div class="q-label"><span class="q-num">10.</span> ¿Qué tan disponibles están en la región los insumos y servicios para innovar en el manejo del suelo? (laboratorios de análisis, bioinsumos, maquinaria especializada)</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q10" value="Muy disponibles; los productores pueden acceder fácilmente"><span class="option-text">Muy disponibles; los productores pueden acceder fácilmente</span></label>
+        <label class="option-item"><input type="radio" name="q10" value="Disponibles pero con costos elevados o lejanía logística"><span class="option-text">Disponibles pero con costos elevados o lejanía logística</span></label>
+        <label class="option-item"><input type="radio" name="q10" value="Escasos; hay opciones limitadas en la región"><span class="option-text">Escasos; hay opciones limitadas en la región</span></label>
+        <label class="option-item"><input type="radio" name="q10" value="Prácticamente inexistentes en los municipios donde trabajo"><span class="option-text">Prácticamente inexistentes en los municipios donde trabajo</span></label>
+      </div>
+      <div class="field-error" id="err_q10">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q11">
+      <div class="q-label"><span class="q-num">11.</span> ¿En qué etapa del cultivo considera que es más difícil introducir cambios en las prácticas de manejo?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q11" value="Preparación del terreno y plantación"><span class="option-text">Preparación del terreno y plantación</span></label>
+        <label class="option-item"><input type="radio" name="q11" value="Fertilización y nutrición del cultivo"><span class="option-text">Fertilización y nutrición del cultivo</span></label>
+        <label class="option-item"><input type="radio" name="q11" value="Control de malezas y fitosanitario"><span class="option-text">Control de malezas y fitosanitario</span></label>
+        <label class="option-item"><input type="radio" name="q11" value="Conservación del suelo entre ciclos"><span class="option-text">Conservación del suelo entre ciclos</span></label>
+        <label class="option-item"><input type="radio" name="q11" value="Cosecha (jima) y manejo post-jima"><span class="option-text">Cosecha (jima) y manejo post-jima</span></label>
+      </div>
+      <div class="field-error" id="err_q11">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q12">
+      <div class="q-label"><span class="q-num">12.</span> ¿Qué factor limita más su propia capacidad para promover innovaciones entre los productores que supervisa?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q12" value="Falta de tiempo por la carga de trabajo y número de productores a atender"><span class="option-text">Falta de tiempo por la carga de trabajo y número de productores a atender</span></label>
+        <label class="option-item"><input type="radio" name="q12" value="Falta de materiales, demostraciones o evidencia técnica local"><span class="option-text">Falta de materiales, demostraciones o evidencia técnica local</span></label>
+        <label class="option-item"><input type="radio" name="q12" value="Restricciones o lineamientos de la empresa u organización para la que trabajo"><span class="option-text">Restricciones o lineamientos de la empresa u organización para la que trabajo</span></label>
+        <label class="option-item"><input type="radio" name="q12" value="Falta de capacitación o actualización técnica propia"><span class="option-text">Falta de capacitación o actualización técnica propia</span></label>
+        <label class="option-item"><input type="radio" name="q12" value="Resistencia de los productores que desalienta el esfuerzo"><span class="option-text">Resistencia de los productores que desalienta el esfuerzo</span></label>
+      </div>
+      <div class="field-error" id="err_q12">Por favor seleccione una opción.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ BLOQUE 4 ═══ -->
+<div class="section" id="sec4">
+  <div class="section-header">
+    <div class="section-num">4</div>
+    <div class="section-title">Entorno Institucional y Transferencia de Conocimiento</div>
+  </div>
+  <div class="section-note">Nos interesa conocer cómo el marco normativo, los incentivos y la relación técnico–productor influyen en la posibilidad real de innovar.</div>
+  <div class="section-body">
+
+    <div class="question" id="q13">
+      <div class="q-label"><span class="q-num">13.</span> ¿Cómo evalúa el papel del CRT y la normativa vigente (NOM-006) respecto a la adopción de prácticas sostenibles de manejo del suelo?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q13" value="Facilitan activamente la innovación y promueven buenas prácticas"><span class="option-text">Facilitan activamente la innovación y promueven buenas prácticas</span></label>
+        <label class="option-item"><input type="radio" name="q13" value="Son neutros; ni facilitan ni obstaculizan"><span class="option-text">Son neutros; ni facilitan ni obstaculizan</span></label>
+        <label class="option-item"><input type="radio" name="q13" value="Limitan parcialmente la adopción de nuevas prácticas"><span class="option-text">Limitan parcialmente la adopción de nuevas prácticas</span></label>
+        <label class="option-item"><input type="radio" name="q13" value="Son un obstáculo importante; los requisitos actuales frenan la innovación"><span class="option-text">Son un obstáculo importante; los requisitos actuales frenan la innovación</span></label>
+      </div>
+      <div class="field-error" id="err_q13">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q14">
+      <div class="q-label"><span class="q-num">14.</span> ¿Qué tipo de incentivo considera que haría más probable que un productor adoptara prácticas innovadoras de conservación de suelo?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q14" value="Un precio de compra diferenciado o prima por buenas prácticas"><span class="option-text">Un precio de compra diferenciado o prima por buenas prácticas</span></label>
+        <label class="option-item"><input type="radio" name="q14" value="Acceso a crédito o financiamiento específico para innovación"><span class="option-text">Acceso a crédito o financiamiento específico para innovación</span></label>
+        <label class="option-item"><input type="radio" name="q14" value="Demostraciones en campo con resultados comprobados en la región"><span class="option-text">Demostraciones en campo con resultados comprobados en la región</span></label>
+        <label class="option-item"><input type="radio" name="q14" value="Exigencia o certificación por parte de la empresa tequilera"><span class="option-text">Exigencia o certificación por parte de la empresa tequilera</span></label>
+        <label class="option-item"><input type="radio" name="q14" value="Capacitación técnica gratuita y acompañamiento continuo"><span class="option-text">Capacitación técnica gratuita y acompañamiento continuo</span></label>
+      </div>
+      <div class="field-error" id="err_q14">Por favor seleccione una opción.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══ BLOQUE 5 ═══ -->
+<div class="section" id="sec5">
+  <div class="section-header">
+    <div class="section-num">5</div>
+    <div class="section-title">Perspectivas y Sostenibilidad</div>
+  </div>
+  <div class="section-note">Preguntas finales para conocer su visión sobre el futuro del cultivo y las acciones prioritarias desde su perspectiva técnica.</div>
+  <div class="section-body">
+
+    <div class="question" id="q15">
+      <div class="q-label"><span class="q-num">15.</span> ¿Considera que el modelo productivo actual del agave tequilero es sostenible a largo plazo, tomando en cuenta el estado actual del suelo?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q15" value="Sí, es sostenible con las prácticas actuales"><span class="option-text">Sí, es sostenible con las prácticas actuales</span></label>
+        <label class="option-item"><input type="radio" name="q15" value="Solo si se hacen ajustes moderados en el manejo del suelo y los insumos"><span class="option-text">Solo si se hacen ajustes moderados en el manejo del suelo y los insumos</span></label>
+        <label class="option-item"><input type="radio" name="q15" value="No; se requieren cambios profundos para garantizar la viabilidad del cultivo"><span class="option-text">No; se requieren cambios profundos para garantizar la viabilidad del cultivo</span></label>
+        <label class="option-item"><input type="radio" name="q15" value="No sé / No tengo suficiente información para responder"><span class="option-text">No sé / No tengo suficiente información para responder</span></label>
+      </div>
+      <div class="field-error" id="err_q15">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q16">
+      <div class="q-label"><span class="q-num">16.</span> ¿Qué cambio tendría mayor impacto para superar las barreras a la innovación en conservación de suelos?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q16" value="Que las empresas tequileras exijan y paguen mejor por buenas prácticas"><span class="option-text">Que las empresas tequileras exijan y paguen mejor por buenas prácticas</span></label>
+        <label class="option-item"><input type="radio" name="q16" value="Mayor inversión pública en asistencia técnica y capacitación en campo"><span class="option-text">Mayor inversión pública en asistencia técnica y capacitación en campo</span></label>
+        <label class="option-item"><input type="radio" name="q16" value="Más investigación aplicada y demostraciones locales con resultados tangibles"><span class="option-text">Más investigación aplicada y demostraciones locales con resultados tangibles</span></label>
+        <label class="option-item"><input type="radio" name="q16" value="Cambio generacional; los productores jóvenes son más receptivos a innovar"><span class="option-text">Cambio generacional; los productores jóvenes son más receptivos a innovar</span></label>
+        <label class="option-item"><input type="radio" name="q16" value="Simplificación normativa que permita experimentar con nuevas prácticas"><span class="option-text">Simplificación normativa que permita experimentar con nuevas prácticas</span></label>
+      </div>
+      <div class="field-error" id="err_q16">Por favor seleccione una opción.</div>
+    </div>
+
+    <div class="question" id="q17">
+      <div class="q-label"><span class="q-num">17.</span> En su experiencia, ¿cuál es el principal aprendizaje al intentar promover innovaciones en el manejo y conservación del suelo del agave?</div>
+      <div class="options-list">
+        <label class="option-item"><input type="radio" name="q17" value="La confianza y la demostración en campo son más efectivas que cualquier capacitación formal"><span class="option-text">La confianza y la demostración en campo son más efectivas que cualquier capacitación formal</span></label>
+        <label class="option-item"><input type="radio" name="q17" value="Sin incentivo económico claro, muy pocos productores están dispuestos a cambiar"><span class="option-text">Sin incentivo económico claro, muy pocos productores están dispuestos a cambiar</span></label>
+        <label class="option-item"><input type="radio" name="q17" value="Los productores sí quieren innovar, pero no tienen acceso a los recursos necesarios"><span class="option-text">Los productores sí quieren innovar, pero no tienen acceso a los recursos necesarios</span></label>
+        <label class="option-item"><input type="radio" name="q17" value="La principal barrera no es técnica ni económica, sino cultural o generacional"><span class="option-text">La principal barrera no es técnica ni económica, sino cultural o generacional</span></label>
+        <label class="option-item"><input type="radio" name="q17" value="El sistema normativo y comercial actual no deja margen real para innovar"><span class="option-text">El sistema normativo y comercial actual no deja margen real para innovar</span></label>
+      </div>
+      <div class="field-error" id="err_q17">Por favor seleccione una opción.</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-section">
+  <button type="submit" class="btn-submit" id="btnSubmit">Enviar cuestionario ✓</button>
+  <p style="font-size:12px;color:var(--gris-med);margin-top:14px;">Sus respuestas serán tratadas con estricta confidencialidad.</p>
+</div>
+
+</form>
+
+<!-- SUCCESS -->
+<div class="success-screen" id="successScreen">
+  <div class="success-icon">✓</div>
+  <h2>¡Muchas gracias!</h2>
+  <p>Sus respuestas han sido registradas. Su perspectiva técnica es de gran valor para comprender las barreras a la innovación en el cultivo del agave y contribuir a su sostenibilidad.</p>
+  <p style="margin-top:16px;font-size:13px;">Contacto: <a href="mailto:anad.espinoza@ciestaam.edu.mx" style="color:var(--verde-med);">anad.espinoza@ciestaam.edu.mx</a><br>CIESTAAM – Universidad Autónoma Chapingo</p>
+</div>
+
+</div><!-- /form-container -->
+
+<div class="footer">
+  CIESTAAM – Universidad Autónoma Chapingo &nbsp;·&nbsp; Maestría en Ciencias en Estrategia Agroempresarial &nbsp;·&nbsp; 2026<br>
+  <a href="mailto:anad.espinoza@ciestaam.edu.mx">anad.espinoza@ciestaam.edu.mx</a>
+</div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxfmWvqzVXRkMP9PxIlYdo-f8ED7HaADOxbxiJLeQnG1rliwcnmVFWML_zP-6ndOAN3/exec';
+
+// Highlight selected options
+document.addEventListener('change', function(e) {
+  if (e.target.type === 'radio') {
+    const group = document.querySelectorAll(`input[name="${e.target.name}"]`);
+    group.forEach(inp => {
+      const lbl = inp.closest('.option-item');
+      if (lbl) lbl.classList.toggle('selected', inp.checked);
+    });
+    updateProgress();
+  }
+});
+
+// Municipio "Otro" conditional
+document.querySelectorAll('input[name="municipio"]').forEach(r => {
+  r.addEventListener('change', () => {
+    const txt = document.getElementById('mun_otro_txt');
+    const isOtro = document.getElementById('mun_otro').checked;
+    txt.disabled = !isOtro;
+    if (!isOtro) txt.value = '';
+    if (isOtro) txt.focus();
+  });
+});
+
+// Progress
+function updateProgress() {
+  const blocks = [
+    ['q1','q2','q3'],
+    ['q4','q5','q6','q7'],
+    ['q8','q9','q10','q11','q12'],
+    ['q13','q14'],
+    ['q15','q16','q17']
+  ];
+  let done = 0;
+  blocks.forEach(grp => {
+    if (grp.every(n => !!document.querySelector(`input[name="${n}"]:checked`))) done++;
+  });
+  document.getElementById('progressFill').style.width = (done / 5 * 100) + '%';
+  document.getElementById('progressLabel').textContent = done + ' de 5 bloques completados';
+}
+
+// Submit
+document.getElementById('surveyForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const required = [
+    { type:'text',  name:'nombre',     id:'q_nombre',   err:'err_nombre' },
+    { type:'radio', name:'municipio',  id:'q_municipio',err:'err_municipio' },
+    { type:'radio', name:'q1',  id:'q1',  err:'err_q1'  },
+    { type:'radio', name:'q2',  id:'q2',  err:'err_q2'  },
+    { type:'radio', name:'q3',  id:'q3',  err:'err_q3'  },
+    { type:'radio', name:'q4',  id:'q4',  err:'err_q4'  },
+    { type:'radio', name:'q5',  id:'q5',  err:'err_q5'  },
+    { type:'radio', name:'q6',  id:'q6',  err:'err_q6'  },
+    { type:'radio', name:'q7',  id:'q7',  err:'err_q7'  },
+    { type:'radio', name:'q8',  id:'q8',  err:'err_q8'  },
+    { type:'radio', name:'q9',  id:'q9',  err:'err_q9'  },
+    { type:'radio', name:'q10', id:'q10', err:'err_q10' },
+    { type:'radio', name:'q11', id:'q11', err:'err_q11' },
+    { type:'radio', name:'q12', id:'q12', err:'err_q12' },
+    { type:'radio', name:'q13', id:'q13', err:'err_q13' },
+    { type:'radio', name:'q14', id:'q14', err:'err_q14' },
+    { type:'radio', name:'q15', id:'q15', err:'err_q15' },
+    { type:'radio', name:'q16', id:'q16', err:'err_q16' },
+    { type:'radio', name:'q17', id:'q17', err:'err_q17' },
+  ];
+
+  let firstError = null;
+  required.forEach(r => {
+    const answered = r.type === 'text'
+      ? document.querySelector(`[name="${r.name}"]`).value.trim() !== ''
+      : !!document.querySelector(`input[name="${r.name}"]:checked`);
+    const qEl  = document.getElementById(r.id);
+    const errEl = document.getElementById(r.err);
+    if (!answered) {
+      errEl.style.display = 'block';
+      qEl.classList.add('has-error');
+      if (!firstError) firstError = qEl;
+    } else {
+      errEl.style.display = 'none';
+      qEl.classList.remove('has-error');
+    }
+  });
+  if (firstError) { firstError.scrollIntoView({behavior:'smooth',block:'center'}); return; }
+
+  // Collect
+  const fd = new FormData(this);
+  const data = {};
+  fd.forEach((v, k) => { if (v !== '') data[k] = v; });
+  if (data.municipio === 'otro') {
+    data.municipio = data.municipio_otro || 'Otro';
+    delete data.municipio_otro;
+  }
+
+  // Send
+  const btn = document.getElementById('btnSubmit');
+  btn.textContent = 'Enviando…';
+  btn.disabled = true;
+
+  fetch(SHEETS_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  })
+  .then(() => {
+    document.getElementById('surveyForm').style.display = 'none';
+    document.querySelector('.progress-wrap').style.display = 'none';
+    const ss = document.getElementById('successScreen');
+    ss.style.display = 'block';
+    ss.scrollIntoView({behavior:'smooth',block:'center'});
+  })
+  .catch(() => {
+    btn.textContent = 'Error al enviar. Intente de nuevo.';
+    btn.disabled = false;
+    btn.style.background = 'var(--error)';
+  });
+});
+</script>
+</body>
+</html>
